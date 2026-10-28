@@ -1,0 +1,189 @@
+{
+  "product": {
+    "overview": "Overview",
+    "controls": "Controls",
+    "checks": "Checks",
+    "frameworks": "Frameworks",
+    "members": "Members",
+    "signIn": "Sign-in",
+    "apiTokens": "API tokens",
+    "account": "Account",
+    "loading": "Loading",
+    "reading": "Reading the controls and their evidence."
+  },
+  "controlStates": {
+    "passing": "Passing",
+    "failing": "Failing",
+    "needs-evidence": "Needs evidence",
+    "not-applicable": "Does not apply"
+  },
+  "checkStates": {
+    "pass": "Passing",
+    "fail": "Failing",
+    "no-data": "No data",
+    "unreachable": "Not read",
+    "not-connected": "Not installed"
+  },
+  "sourceStates": {
+    "ok": "Read",
+    "failing": "Could not read",
+    "waiting": "Not read yet"
+  },
+  "reports": {
+    "md": "Report",
+    "csv": "CSV"
+  },
+  "search": {
+    "control": "Control"
+  },
+  "gaps": {
+    "failing": "{{check}}: the check fails.",
+    "no-data": "{{check}}: the product does not serve this number.",
+    "unreachable": "{{check}}: the product could not be read.",
+    "no-product": "No installed product proves it: add evidence by hand.",
+    "evidence-missing": "Add evidence by hand: {{manual}}.",
+    "evidence-expired": "The evidence added by hand has expired: add it again."
+  },
+  "checkHints": {
+    "pass": "{{product}} serves a number that meets it.",
+    "fail": "{{product}} serves a number that does not meet it. Fix it there; the next read shows the change.",
+    "no-data": "{{product}} does not serve this number: it may be an older version, or have nothing to count yet.",
+    "unreachable": "{{product}} could not be read at its last read. The value is the last one read.",
+    "not-connected": "{{product}} is not among the install's products, so this check is left out of every control."
+  },
+  "overviewPage": {
+    "overview": "Overview",
+    "readAt": "Products last read on {{when}}.",
+    "notReadYet": "The products have not been read yet.",
+    "sourcesFailing_one": "{{count}} product could not be read",
+    "sourcesFailing_other": "{{count}} products could not be read",
+    "see": "See which",
+    "sourcesFailingDetail": "Their checks keep the last values read, and the controls they prove need evidence until they are read again.",
+    "noSources": "No product is read",
+    "noSourcesDetail": "Set OPENASY_PRODUCTS to the install's products, as in every product, or COMPLIANCE_SOURCES to their /metrics addresses.",
+    "passing": "Passing",
+    "ofApply": "{{n}} of {{of}} that apply",
+    "failing": "Failing",
+    "needsEvidence": "Need evidence",
+    "withoutOwner": "Without owner",
+    "productsRead": "Products read",
+    "frameworkDetail": "{{failing}} failing, {{needs}} need evidence, {{na}} do not apply.",
+    "controls": "Controls",
+    "trend": "Passing over 90 days",
+    "trendDetail": "The share of controls that apply and pass, at the end of each day.",
+    "target": "80%",
+    "trendSoon": "A trend after the second day",
+    "trendSoonDetail": "Each day keeps its share of passing controls.",
+    "holdingBack": "Checks holding controls back",
+    "holdingBackDetail": "Failing checks, by how many controls they hold back.",
+    "noFailingChecks": "No check fails",
+    "evidenceEnding": "Evidence by hand: {{soon}} ends within 30 days, {{expired}} has ended",
+    "evidenceEndingDetail": "Ended evidence no longer counts. Add the new version on the control."
+  },
+  "controlsPage": {
+    "controls": "Controls",
+    "description": "Each control of the enabled frameworks, with the checks that prove it and the evidence added by hand.",
+    "control": "Control",
+    "state": "State",
+    "proof": "Proof",
+    "checksPassing": "{{n}} of {{of}} checks pass",
+    "noProduct": "No installed product proves it",
+    "evidence_one": "{{count}} piece of evidence",
+    "evidence_other": "{{count}} pieces of evidence",
+    "owner": "Owner",
+    "all": "All",
+    "shown": "{{shown}} of {{total}} shown",
+    "framework": "Framework",
+    "search": "Search controls",
+    "none": "No controls",
+    "noneDetail": "Change the filters, or enable a framework."
+  },
+  "controlPage": {
+    "notFound": "Control not found",
+    "notFoundDetail": "Its framework or reference may be wrong.",
+    "back": "Back to controls",
+    "whatIsMissing": "What is missing",
+    "checks": "Checks",
+    "checksDetail": "Numbers read from the products. A product that is not installed is left out.",
+    "noChecks": "No checks",
+    "noChecksDetail": "Software cannot prove this control: add evidence by hand.",
+    "evidence": "Evidence by hand",
+    "asks": "It asks for: {{manual}}.",
+    "evidenceDetail": "Documents and records the checks do not cover. Each counts until its date.",
+    "addedBy": "Added by {{who}} on {{when}}, counts until {{until}}",
+    "valid": "Counts",
+    "expired": "Ended",
+    "deleteEvidence": "Delete {{title}}",
+    "noEvidence": "None added.",
+    "addEvidence": "Add evidence",
+    "title": "Title",
+    "titlePlaceholder": "Access review, Q3",
+    "link": "Where it is",
+    "validUntil": "Counts until",
+    "validUntilHint": "A year from today when left empty.",
+    "ownerAndScope": "Owner and scope",
+    "ownerPlaceholder": "A person or a team",
+    "save": "Save",
+    "applies": "Applies here",
+    "appliesDetail": "To mark it as not applying, write why first: an auditor will ask.",
+    "doesNotApply": "Does not apply: {{reason}}",
+    "reason": "Why it does not apply",
+    "reasonHint": "Such as: we keep no card data."
+  },
+  "checksPage": {
+    "checks": "Checks",
+    "description": "Numbers each product serves at /metrics, and what they must be. Products are read every 15 minutes.",
+    "product": "Product",
+    "check": "Check",
+    "value": "Value",
+    "state": "State",
+    "address": "Address",
+    "controls": "Controls",
+    "readNow": "Read now",
+    "reading": "Reading",
+    "sources": "Products read",
+    "sourcesDetail": "Where each product's /metrics is, and how its last read went."
+  },
+  "checkPage": {
+    "notFound": "Check not found",
+    "notFoundDetail": "There is no check with this name.",
+    "back": "Back to checks",
+    "readAt": "Read on {{when}}: {{value}}.",
+    "rule": "Rule",
+    "last90": "Last 90 days",
+    "last90Detail": "Green when every read of the day passed, amber when some did, red when none did.",
+    "dayDetail": "{{passes}} of {{runs}} reads passed, last value {{value}}",
+    "noRead": "Not read",
+    "daysAgo": "{{n}} days ago",
+    "today": "Today",
+    "proves": "Controls it proves"
+  },
+  "frameworksPage": {
+    "frameworks": "Frameworks",
+    "description": "The frameworks in scope here. A framework out of scope is left out of the lists and the overview.",
+    "counts": "{{controls}} controls, {{passing}} passing.",
+    "inScope": "In scope",
+    "inScopeDetail": "Only admins change it."
+  },
+  "settingsPage": {
+    "adminsOnly": "Admins only",
+    "askAnAdmin": "Ask an admin of this compliance.",
+    "signOut": "Sign out",
+    "account": {
+      "title": "Account",
+      "description": "Your profile, password, two-step verification and where you are signed in."
+    },
+    "members": {
+      "title": "Members",
+      "description": "Who can sign in to this compliance, and with which role. Viewers see everything, auditors too; editors also own controls and add evidence; admins also choose frameworks, and manage members and tokens."
+    },
+    "signin": {
+      "title": "Sign-in",
+      "description": "Identity providers people can sign in with, such as OpenAsy Identity, Keycloak or Microsoft Entra ID, and which of their groups give which role."
+    },
+    "tokens": {
+      "title": "API tokens",
+      "description": "For scripts and CI. Each token has one role and an expiry; the secret is shown once."
+    }
+  }
+}

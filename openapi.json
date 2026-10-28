@@ -1,0 +1,1753 @@
+{
+  "openapi": "3.1.1",
+  "info": {
+    "title": "OpenAsy Compliance API",
+    "version": "0.1.0",
+    "summary": "ISO 27001, SOC 2, GDPR and PCI DSS controls, with evidence read from the products that do the work.",
+    "description": "Every screen of compliance uses this API, and so can your scripts (ADR 0014). Within `/api/v1` changes are additive only; anything removed is deprecated first (ADR 0024). Errors use Problem Details (RFC 9457).\n\nCompliance reads the other products' `/metrics` and judges checks on what they serve; nothing is sent to it. Every operation takes the session of a signed-in person or an API token, and names the role it needs (`x-openasy-role`: viewer, editor, admin; ADR 0003).\n\nSign-in, members and API tokens are under `/api/v1/auth`, provided by [@openasy/auth](https://github.com/openasy/auth#routes).",
+    "license": {
+      "name": "AGPL-3.0-only",
+      "identifier": "AGPL-3.0-only"
+    }
+  },
+  "servers": [
+    {
+      "url": "/",
+      "description": "This compliance"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Frameworks",
+      "description": "ISO 27001, SOC 2, GDPR and PCI DSS, and their reports."
+    },
+    {
+      "name": "Controls",
+      "description": "Each control's state, owner and evidence."
+    },
+    {
+      "name": "Checks",
+      "description": "Numbers read from the products, and what they must be."
+    },
+    {
+      "name": "Product",
+      "description": "Version and overview of this compliance."
+    }
+  ],
+  "paths": {
+    "/api/v1/frameworks": {
+      "get": {
+        "operationId": "listFrameworks",
+        "tags": [
+          "Frameworks"
+        ],
+        "summary": "Frameworks",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "viewer",
+        "description": "Needs the viewer role.",
+        "responses": {
+          "200": {
+            "description": "Every framework, enabled or not.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FrameworkList"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/frameworks/{framework}": {
+      "put": {
+        "operationId": "enableFramework",
+        "tags": [
+          "Frameworks"
+        ],
+        "summary": "Turn a framework on or off",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "admin",
+        "description": "Needs the admin role.",
+        "parameters": [
+          {
+            "name": "framework",
+            "in": "path",
+            "required": true,
+            "description": "iso27001, soc2, gdpr or pci-dss.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnableFramework"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The framework.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Framework"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "422": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/frameworks/{framework}/report": {
+      "get": {
+        "operationId": "getReport",
+        "tags": [
+          "Frameworks"
+        ],
+        "summary": "A framework's report",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "viewer",
+        "description": "Needs the viewer role. Every control with its state, its checks and the evidence added by hand, to hand to an auditor, as a file.",
+        "parameters": [
+          {
+            "name": "framework",
+            "in": "path",
+            "required": true,
+            "description": "iso27001, soc2, gdpr or pci-dss.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "format",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "md",
+                "csv"
+              ],
+              "default": "md"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The report.",
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/csv": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "422": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/controls": {
+      "get": {
+        "operationId": "listControls",
+        "tags": [
+          "Controls"
+        ],
+        "summary": "Controls",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "viewer",
+        "description": "Needs the viewer role. The controls of the enabled frameworks, or of the one named.",
+        "parameters": [
+          {
+            "name": "framework",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "passing",
+                "failing",
+                "needs-evidence",
+                "not-applicable"
+              ]
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Part of the reference, title or owner.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The controls.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ControlList"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "422": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/controls/{framework}/{ref}": {
+      "get": {
+        "operationId": "getControl",
+        "tags": [
+          "Controls"
+        ],
+        "summary": "A control, its checks and evidence",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "viewer",
+        "description": "Needs the viewer role.",
+        "parameters": [
+          {
+            "name": "framework",
+            "in": "path",
+            "required": true,
+            "description": "iso27001, soc2, gdpr or pci-dss.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ref",
+            "in": "path",
+            "required": true,
+            "description": "The control's reference, such as A.8.13 or CC7.2, URL-encoded.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The control.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Control"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateControl",
+        "tags": [
+          "Controls"
+        ],
+        "summary": "Set a control's owner, or whether it applies",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "editor",
+        "description": "Needs the editor role. A control that does not apply needs a reason, as in a statement of applicability.",
+        "parameters": [
+          {
+            "name": "framework",
+            "in": "path",
+            "required": true,
+            "description": "iso27001, soc2, gdpr or pci-dss.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ref",
+            "in": "path",
+            "required": true,
+            "description": "The control's reference, such as A.8.13 or CC7.2, URL-encoded.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateControl"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The control.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Control"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "422": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/controls/{framework}/{ref}/evidence": {
+      "post": {
+        "operationId": "addEvidence",
+        "tags": [
+          "Controls"
+        ],
+        "summary": "Add evidence by hand",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "editor",
+        "description": "Needs the editor role. For what software cannot prove, such as training records: a title, where the document is, and until when it counts.",
+        "parameters": [
+          {
+            "name": "framework",
+            "in": "path",
+            "required": true,
+            "description": "iso27001, soc2, gdpr or pci-dss.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "ref",
+            "in": "path",
+            "required": true,
+            "description": "The control's reference, such as A.8.13 or CC7.2, URL-encoded.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewEvidence"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "The evidence.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Evidence"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "422": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/evidence/{id}": {
+      "delete": {
+        "operationId": "deleteEvidence",
+        "tags": [
+          "Controls"
+        ],
+        "summary": "Delete evidence",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "editor",
+        "description": "Needs the editor role.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The evidence's id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Deleted."
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/checks": {
+      "get": {
+        "operationId": "listChecks",
+        "tags": [
+          "Checks"
+        ],
+        "summary": "Checks",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "viewer",
+        "description": "Needs the viewer role. Every check, with its latest result.",
+        "responses": {
+          "200": {
+            "description": "The checks.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckList"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/checks/{id}": {
+      "get": {
+        "operationId": "getCheck",
+        "tags": [
+          "Checks"
+        ],
+        "summary": "A check and its days",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "viewer",
+        "description": "Needs the viewer role.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "The check's id.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The check.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckDetail"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "404": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/sources": {
+      "get": {
+        "operationId": "listSources",
+        "tags": [
+          "Checks"
+        ],
+        "summary": "Products read",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "viewer",
+        "description": "Needs the viewer role. Each product's /metrics address and how its last read went.",
+        "responses": {
+          "200": {
+            "description": "The products.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceList"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/collect": {
+      "post": {
+        "operationId": "collect",
+        "tags": [
+          "Checks"
+        ],
+        "summary": "Read every product now",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "editor",
+        "description": "Needs the editor role. Otherwise they are read every COMPLIANCE_COLLECT_MINUTES.",
+        "responses": {
+          "200": {
+            "description": "How each read went.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceList"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/summary": {
+      "get": {
+        "operationId": "getSummary",
+        "tags": [
+          "Product"
+        ],
+        "summary": "Overview",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "x-openasy-role": "viewer",
+        "description": "Needs the viewer role.",
+        "responses": {
+          "200": {
+            "description": "The enabled frameworks, their controls and the products read.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Summary"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        }
+      }
+    },
+    "/api/v1/version": {
+      "get": {
+        "operationId": "getVersion",
+        "tags": [
+          "Product"
+        ],
+        "summary": "Version",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The running version.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Version"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/products": {
+      "get": {
+        "operationId": "listProducts",
+        "tags": [
+          "Product"
+        ],
+        "summary": "Other products of this install",
+        "security": [
+          {
+            "session": []
+          },
+          {
+            "apiToken": []
+          },
+          {
+            "adminToken": []
+          }
+        ],
+        "description": "Needs the viewer role.",
+        "responses": {
+          "200": {
+            "description": "From OPENASY_PRODUCTS, for the product switcher.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProductList"
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "403": {
+            "$ref": "#/components/responses/Problem"
+          },
+          "503": {
+            "$ref": "#/components/responses/Problem"
+          }
+        },
+        "x-openasy-role": "viewer"
+      }
+    },
+    "/healthz": {
+      "get": {
+        "operationId": "liveness",
+        "tags": [
+          "Product"
+        ],
+        "summary": "Liveness",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "The process is running.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/readyz": {
+      "get": {
+        "operationId": "readiness",
+        "tags": [
+          "Product"
+        ],
+        "summary": "Readiness",
+        "description": "Ready while the database answers.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Ready to serve.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The database is unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Status"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/metrics": {
+      "get": {
+        "operationId": "metrics",
+        "tags": [
+          "Product"
+        ],
+        "summary": "Prometheus metrics",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Metrics in the Prometheus text format.",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "session": {
+        "type": "apiKey",
+        "in": "cookie",
+        "name": "__Host-openasy-session",
+        "description": "The browser session after signing in (`openasy-session` when compliance runs on plain http://localhost). Requests that change something must come from the compliance origin."
+      },
+      "apiToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "An API token created under Settings → API tokens (`oa_compliance_...`): one role, always an expiry (ADR 0003)."
+      },
+      "adminToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "Only when compliance is started by its tests or a local script: one shared token with the admin role. A production install does not have it."
+      }
+    },
+    "responses": {
+      "Problem": {
+        "description": "An error, as RFC 9457 Problem Details.",
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "Problem": {
+        "type": "object",
+        "required": [
+          "type",
+          "title",
+          "status",
+          "code"
+        ],
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer"
+          },
+          "code": {
+            "type": "string",
+            "enum": [
+              "invalid-token",
+              "invalid-json",
+              "invalid-body",
+              "conflict",
+              "not-found",
+              "not-configured",
+              "internal-error",
+              "unauthenticated",
+              "invalid-credentials",
+              "mfa-required",
+              "mfa-setup-required",
+              "forbidden",
+              "cross-site",
+              "rate-limited"
+            ],
+            "description": "Stable; match on this."
+          },
+          "detail": {
+            "type": "string"
+          }
+        }
+      },
+      "ProductLink": {
+        "type": "object",
+        "required": [
+          "id",
+          "url"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The product, as OpenAsy names it.",
+            "examples": [
+              "infrastructure"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "The address people open it at.",
+            "examples": [
+              "https://infra.example.com"
+            ]
+          }
+        }
+      },
+      "ProductList": {
+        "type": "object",
+        "required": [
+          "products"
+        ],
+        "properties": {
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductLink"
+            }
+          }
+        }
+      },
+      "Status": {
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "properties": {
+          "status": {
+            "type": "string"
+          }
+        }
+      },
+      "Version": {
+        "type": "object",
+        "required": [
+          "product",
+          "version"
+        ],
+        "properties": {
+          "product": {
+            "const": "compliance"
+          },
+          "version": {
+            "type": "string"
+          }
+        }
+      },
+      "Tally": {
+        "type": "object",
+        "required": [
+          "controls",
+          "passing",
+          "failing",
+          "needsEvidence",
+          "notApplicable"
+        ],
+        "properties": {
+          "controls": {
+            "type": "integer"
+          },
+          "passing": {
+            "type": "integer"
+          },
+          "failing": {
+            "type": "integer"
+          },
+          "needsEvidence": {
+            "type": "integer"
+          },
+          "notApplicable": {
+            "type": "integer"
+          }
+        }
+      },
+      "Framework": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Tally"
+          },
+          {
+            "type": "object",
+            "required": [
+              "id",
+              "name",
+              "enabled",
+              "days"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "enabled": {
+                "type": "boolean",
+                "description": "Controls of a framework that is not enabled are left out of lists and the overview."
+              },
+              "days": {
+                "type": "array",
+                "description": "The last 90 days: controls passing of those that apply.",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "day",
+                    "passing",
+                    "total"
+                  ],
+                  "properties": {
+                    "day": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "passing": {
+                      "type": "integer"
+                    },
+                    "total": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "FrameworkList": {
+        "type": "object",
+        "required": [
+          "frameworks"
+        ],
+        "properties": {
+          "frameworks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Framework"
+            }
+          }
+        }
+      },
+      "EnableFramework": {
+        "type": "object",
+        "required": [
+          "enabled"
+        ],
+        "properties": {
+          "enabled": {
+            "type": "boolean"
+          }
+        }
+      },
+      "Gap": {
+        "type": "object",
+        "required": [
+          "kind"
+        ],
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "failing",
+              "no-data",
+              "unreachable",
+              "no-product",
+              "evidence-missing",
+              "evidence-expired"
+            ],
+            "description": "failing: a check fails; no-data: the product does not serve the number; unreachable: the product could not be read; no-product: no installed product proves it, add evidence; evidence-missing and evidence-expired: evidence by hand is needed."
+          },
+          "check": {
+            "type": "string"
+          }
+        }
+      },
+      "ControlSummary": {
+        "type": "object",
+        "required": [
+          "framework",
+          "ref",
+          "title",
+          "state",
+          "owner",
+          "applicable",
+          "reason",
+          "manual",
+          "checks",
+          "evidence",
+          "gaps"
+        ],
+        "properties": {
+          "framework": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "passing",
+              "failing",
+              "needs-evidence",
+              "not-applicable"
+            ]
+          },
+          "owner": {
+            "type": "string"
+          },
+          "applicable": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string",
+            "description": "Why it does not apply."
+          },
+          "manual": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Evidence a person must add, when software cannot prove the control."
+          },
+          "checks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "product",
+                "title",
+                "state"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "product": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "state": {
+                  "type": "string",
+                  "enum": [
+                    "pass",
+                    "fail",
+                    "no-data",
+                    "unreachable",
+                    "not-connected"
+                  ]
+                }
+              }
+            }
+          },
+          "evidence": {
+            "type": "integer",
+            "description": "Pieces of evidence added by hand, valid or not."
+          },
+          "gaps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Gap"
+            }
+          }
+        }
+      },
+      "ControlList": {
+        "type": "object",
+        "required": [
+          "controls"
+        ],
+        "properties": {
+          "controls": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ControlSummary"
+            }
+          }
+        }
+      },
+      "Check": {
+        "type": "object",
+        "required": [
+          "id",
+          "product",
+          "title",
+          "expression",
+          "state",
+          "value",
+          "at",
+          "controls"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "product": {
+            "type": "string",
+            "description": "The product whose /metrics it reads."
+          },
+          "title": {
+            "type": "string"
+          },
+          "expression": {
+            "type": "string",
+            "description": "What the number must be, such as openasy_vulns_known_exploited = 0."
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "pass",
+              "fail",
+              "no-data",
+              "unreachable",
+              "not-connected"
+            ]
+          },
+          "value": {
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "controls": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "framework",
+                "ref"
+              ],
+              "properties": {
+                "framework": {
+                  "type": "string"
+                },
+                "ref": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "CheckList": {
+        "type": "object",
+        "required": [
+          "checks"
+        ],
+        "properties": {
+          "checks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Check"
+            }
+          }
+        }
+      },
+      "CheckDetail": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/Check"
+          },
+          {
+            "type": "object",
+            "required": [
+              "days"
+            ],
+            "properties": {
+              "days": {
+                "type": "array",
+                "description": "The last 90 days with a read: reads, reads that passed, and the last value.",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "day",
+                    "runs",
+                    "passes",
+                    "value"
+                  ],
+                  "properties": {
+                    "day": {
+                      "type": "string",
+                      "format": "date"
+                    },
+                    "runs": {
+                      "type": "integer"
+                    },
+                    "passes": {
+                      "type": "integer"
+                    },
+                    "value": {
+                      "type": "number"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      },
+      "Evidence": {
+        "type": "object",
+        "required": [
+          "id",
+          "framework",
+          "ref",
+          "title",
+          "url",
+          "note",
+          "validUntil",
+          "valid",
+          "addedBy",
+          "addedAt"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "framework": {
+            "type": "string"
+          },
+          "ref": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "note": {
+            "type": "string"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date"
+          },
+          "valid": {
+            "type": "boolean"
+          },
+          "addedBy": {
+            "type": "string"
+          },
+          "addedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "NewEvidence": {
+        "type": "object",
+        "required": [
+          "title"
+        ],
+        "properties": {
+          "title": {
+            "type": "string",
+            "maxLength": 200
+          },
+          "url": {
+            "type": "string",
+            "description": "Where the document is, such as your wiki or file share."
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 2000
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date",
+            "description": "The last day it counts; a year from today when left out."
+          }
+        }
+      },
+      "Control": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/ControlSummary"
+          },
+          {
+            "type": "object",
+            "required": [
+              "frameworkName",
+              "results",
+              "evidenceItems"
+            ],
+            "properties": {
+              "frameworkName": {
+                "type": "string"
+              },
+              "results": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Check"
+                }
+              },
+              "evidenceItems": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/Evidence"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "UpdateControl": {
+        "type": "object",
+        "properties": {
+          "owner": {
+            "type": "string",
+            "maxLength": 120
+          },
+          "applicable": {
+            "type": "boolean"
+          },
+          "reason": {
+            "type": "string",
+            "maxLength": 500,
+            "description": "Needed when it does not apply."
+          }
+        }
+      },
+      "Source": {
+        "type": "object",
+        "required": [
+          "product",
+          "url",
+          "state",
+          "lastAt",
+          "lastOkAt",
+          "error",
+          "checks"
+        ],
+        "properties": {
+          "product": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "ok",
+              "failing",
+              "waiting"
+            ]
+          },
+          "lastAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "lastOkAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          },
+          "error": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "checks": {
+            "type": "integer"
+          }
+        }
+      },
+      "SourceList": {
+        "type": "object",
+        "required": [
+          "sources"
+        ],
+        "properties": {
+          "sources": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Source"
+            }
+          }
+        }
+      },
+      "Summary": {
+        "type": "object",
+        "required": [
+          "frameworks",
+          "totals",
+          "withoutOwner",
+          "sources",
+          "evidence",
+          "failingChecks",
+          "lastCollectedAt"
+        ],
+        "properties": {
+          "frameworks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Framework"
+            },
+            "description": "The enabled frameworks."
+          },
+          "totals": {
+            "$ref": "#/components/schemas/Tally"
+          },
+          "withoutOwner": {
+            "type": "integer"
+          },
+          "sources": {
+            "type": "object",
+            "required": [
+              "total",
+              "ok",
+              "failing"
+            ],
+            "properties": {
+              "total": {
+                "type": "integer"
+              },
+              "ok": {
+                "type": "integer"
+              },
+              "failing": {
+                "type": "integer"
+              }
+            }
+          },
+          "evidence": {
+            "type": "object",
+            "required": [
+              "total",
+              "expiringSoon",
+              "expired"
+            ],
+            "properties": {
+              "total": {
+                "type": "integer"
+              },
+              "expiringSoon": {
+                "type": "integer"
+              },
+              "expired": {
+                "type": "integer"
+              }
+            }
+          },
+          "failingChecks": {
+            "type": "array",
+            "description": "Failing checks, by how many controls they hold back.",
+            "items": {
+              "type": "object",
+              "required": [
+                "id",
+                "title",
+                "product",
+                "controls"
+              ],
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "product": {
+                  "type": "string"
+                },
+                "controls": {
+                  "type": "integer"
+                }
+              }
+            }
+          },
+          "lastCollectedAt": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}

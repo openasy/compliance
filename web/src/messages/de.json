@@ -1,0 +1,189 @@
+{
+  "product": {
+    "overview": "Übersicht",
+    "controls": "Kontrollen",
+    "checks": "Prüfungen",
+    "frameworks": "Rahmenwerke",
+    "members": "Mitglieder",
+    "signIn": "Anmeldung",
+    "apiTokens": "API-Token",
+    "account": "Konto",
+    "loading": "Wird geladen",
+    "reading": "Die Kontrollen und ihre Nachweise werden gelesen."
+  },
+  "controlStates": {
+    "passing": "Erfüllt",
+    "failing": "Nicht erfüllt",
+    "needs-evidence": "Nachweis fehlt",
+    "not-applicable": "Nicht anwendbar"
+  },
+  "checkStates": {
+    "pass": "Bestanden",
+    "fail": "Nicht bestanden",
+    "no-data": "Keine Daten",
+    "unreachable": "Nicht gelesen",
+    "not-connected": "Nicht installiert"
+  },
+  "sourceStates": {
+    "ok": "Gelesen",
+    "failing": "Nicht lesbar",
+    "waiting": "Noch nicht gelesen"
+  },
+  "reports": {
+    "md": "Bericht",
+    "csv": "CSV"
+  },
+  "search": {
+    "control": "Kontrolle"
+  },
+  "gaps": {
+    "failing": "{{check}}: die Prüfung ist nicht bestanden.",
+    "no-data": "{{check}}: das Produkt liefert diese Zahl nicht.",
+    "unreachable": "{{check}}: das Produkt konnte nicht gelesen werden.",
+    "no-product": "Kein installiertes Produkt weist es nach: füge einen Nachweis von Hand hinzu.",
+    "evidence-missing": "Füge einen Nachweis von Hand hinzu: {{manual}}.",
+    "evidence-expired": "Der von Hand hinzugefügte Nachweis ist abgelaufen: füge ihn erneut hinzu."
+  },
+  "checkHints": {
+    "pass": "{{product}} liefert eine Zahl, die sie erfüllt.",
+    "fail": "{{product}} liefert eine Zahl, die sie nicht erfüllt. Behebe es dort; das nächste Lesen zeigt die Änderung.",
+    "no-data": "{{product}} liefert diese Zahl nicht: Es ist vielleicht eine ältere Version oder hat noch nichts zu zählen.",
+    "unreachable": "{{product}} konnte beim letzten Lesen nicht gelesen werden. Der Wert ist der zuletzt gelesene.",
+    "not-connected": "{{product}} gehört nicht zu den Produkten der Installation, daher zählt diese Prüfung bei keiner Kontrolle."
+  },
+  "overviewPage": {
+    "overview": "Übersicht",
+    "readAt": "Produkte zuletzt am {{when}} gelesen.",
+    "notReadYet": "Die Produkte wurden noch nicht gelesen.",
+    "sourcesFailing_one": "{{count}} Produkt konnte nicht gelesen werden",
+    "sourcesFailing_other": "{{count}} Produkte konnten nicht gelesen werden",
+    "see": "Welche",
+    "sourcesFailingDetail": "Ihre Prüfungen behalten die zuletzt gelesenen Werte, und die Kontrollen, die sie nachweisen, brauchen Nachweise, bis sie wieder gelesen werden.",
+    "noSources": "Kein Produkt wird gelesen",
+    "noSourcesDetail": "Setze OPENASY_PRODUCTS auf die Produkte der Installation, wie in jedem Produkt, oder COMPLIANCE_SOURCES auf ihre /metrics-Adressen.",
+    "passing": "Erfüllt",
+    "ofApply": "{{n}} von {{of}} anwendbaren",
+    "failing": "Nicht erfüllt",
+    "needsEvidence": "Nachweis fehlt",
+    "withoutOwner": "Ohne Verantwortliche",
+    "productsRead": "Gelesene Produkte",
+    "frameworkDetail": "{{failing}} nicht erfüllt, {{needs}} ohne Nachweis, {{na}} nicht anwendbar.",
+    "controls": "Kontrollen",
+    "trend": "Erfüllt über 90 Tage",
+    "trendDetail": "Der Anteil der anwendbaren Kontrollen, die erfüllt sind, am Ende jedes Tages.",
+    "target": "80 %",
+    "trendSoon": "Ein Verlauf ab dem zweiten Tag",
+    "trendSoonDetail": "Jeder Tag behält seinen Anteil erfüllter Kontrollen.",
+    "holdingBack": "Prüfungen, die Kontrollen aufhalten",
+    "holdingBackDetail": "Nicht bestandene Prüfungen, nach der Zahl der Kontrollen, die sie aufhalten.",
+    "noFailingChecks": "Keine Prüfung ist nicht bestanden",
+    "evidenceEnding": "Nachweise von Hand: {{soon}} enden in 30 Tagen, {{expired}} sind abgelaufen",
+    "evidenceEndingDetail": "Abgelaufene Nachweise zählen nicht mehr. Füge die neue Fassung an der Kontrolle hinzu."
+  },
+  "controlsPage": {
+    "controls": "Kontrollen",
+    "description": "Jede Kontrolle der aktiven Rahmenwerke, mit den Prüfungen, die sie nachweisen, und den Nachweisen von Hand.",
+    "control": "Kontrolle",
+    "state": "Zustand",
+    "proof": "Nachweis",
+    "checksPassing": "{{n}} von {{of}} Prüfungen bestanden",
+    "noProduct": "Kein installiertes Produkt weist es nach",
+    "evidence_one": "{{count}} Nachweis",
+    "evidence_other": "{{count}} Nachweise",
+    "owner": "Verantwortlich",
+    "all": "Alle",
+    "shown": "{{shown}} von {{total}} angezeigt",
+    "framework": "Rahmenwerk",
+    "search": "Kontrollen suchen",
+    "none": "Keine Kontrollen",
+    "noneDetail": "Ändere die Filter, oder aktiviere ein Rahmenwerk."
+  },
+  "controlPage": {
+    "notFound": "Kontrolle nicht gefunden",
+    "notFoundDetail": "Rahmenwerk oder Nummer sind vielleicht falsch.",
+    "back": "Zurück zu den Kontrollen",
+    "whatIsMissing": "Was fehlt",
+    "checks": "Prüfungen",
+    "checksDetail": "Zahlen, die aus den Produkten gelesen werden. Ein nicht installiertes Produkt zählt nicht.",
+    "noChecks": "Keine Prüfungen",
+    "noChecksDetail": "Software kann diese Kontrolle nicht nachweisen: füge einen Nachweis von Hand hinzu.",
+    "evidence": "Nachweise von Hand",
+    "asks": "Verlangt: {{manual}}.",
+    "evidenceDetail": "Dokumente und Aufzeichnungen, die die Prüfungen nicht abdecken. Jeder zählt bis zu seinem Datum.",
+    "addedBy": "Von {{who}} am {{when}} hinzugefügt, zählt bis {{until}}",
+    "valid": "Zählt",
+    "expired": "Abgelaufen",
+    "deleteEvidence": "{{title}} löschen",
+    "noEvidence": "Keiner hinzugefügt.",
+    "addEvidence": "Nachweis hinzufügen",
+    "title": "Titel",
+    "titlePlaceholder": "Zugriffsprüfung, Q3",
+    "link": "Wo er liegt",
+    "validUntil": "Zählt bis",
+    "validUntilHint": "Leer gelassen: ein Jahr ab heute.",
+    "ownerAndScope": "Verantwortung und Geltung",
+    "ownerPlaceholder": "Eine Person oder ein Team",
+    "save": "Speichern",
+    "applies": "Gilt hier",
+    "appliesDetail": "Um sie als nicht anwendbar zu markieren, schreibe zuerst den Grund: Die Prüfer werden fragen.",
+    "doesNotApply": "Nicht anwendbar: {{reason}}",
+    "reason": "Warum sie nicht gilt",
+    "reasonHint": "Etwa: Wir speichern keine Kartendaten."
+  },
+  "checksPage": {
+    "checks": "Prüfungen",
+    "description": "Zahlen, die jedes Produkt unter /metrics liefert, und was sie sein müssen. Die Produkte werden alle 15 Minuten gelesen.",
+    "product": "Produkt",
+    "check": "Prüfung",
+    "value": "Wert",
+    "state": "Zustand",
+    "address": "Adresse",
+    "controls": "Kontrollen",
+    "readNow": "Jetzt lesen",
+    "reading": "Wird gelesen",
+    "sources": "Gelesene Produkte",
+    "sourcesDetail": "Wo /metrics jedes Produkts liegt, und wie das letzte Lesen verlief."
+  },
+  "checkPage": {
+    "notFound": "Prüfung nicht gefunden",
+    "notFoundDetail": "Es gibt keine Prüfung mit diesem Namen.",
+    "back": "Zurück zu den Prüfungen",
+    "readAt": "Am {{when}} gelesen: {{value}}.",
+    "rule": "Regel",
+    "last90": "Letzte 90 Tage",
+    "last90Detail": "Grün, wenn jedes Lesen des Tages bestanden hat, gelb, wenn einige, rot, wenn keines.",
+    "dayDetail": "{{passes}} von {{runs}} Lesevorgängen bestanden, letzter Wert {{value}}",
+    "noRead": "Nicht gelesen",
+    "daysAgo": "vor {{n}} Tagen",
+    "today": "Heute",
+    "proves": "Kontrollen, die sie nachweist"
+  },
+  "frameworksPage": {
+    "frameworks": "Rahmenwerke",
+    "description": "Die Rahmenwerke, die hier gelten. Ein Rahmenwerk außerhalb des Geltungsbereichs fehlt in den Listen und der Übersicht.",
+    "counts": "{{controls}} Kontrollen, {{passing}} erfüllt.",
+    "inScope": "Im Geltungsbereich",
+    "inScopeDetail": "Nur Admins ändern es."
+  },
+  "settingsPage": {
+    "adminsOnly": "Nur für Admins",
+    "askAnAdmin": "Frage einen Admin dieses compliance.",
+    "signOut": "Abmelden",
+    "account": {
+      "title": "Konto",
+      "description": "Dein Profil, Passwort, die Zwei-Schritt-Verifizierung und wo du angemeldet bist."
+    },
+    "members": {
+      "title": "Mitglieder",
+      "description": "Wer sich bei diesem compliance anmelden kann, und mit welcher Rolle. Viewer sehen alles, auch Prüfer; Editoren sind außerdem für Kontrollen verantwortlich und fügen Nachweise hinzu; Admins wählen außerdem Rahmenwerke und verwalten Mitglieder und Token."
+    },
+    "signin": {
+      "title": "Anmeldung",
+      "description": "Identitätsanbieter, mit denen sich Personen anmelden können, etwa OpenAsy Identity, Keycloak oder Microsoft Entra ID, und welche ihrer Gruppen welche Rolle geben."
+    },
+    "tokens": {
+      "title": "API-Token",
+      "description": "Für Skripte und CI. Jedes Token hat eine Rolle und ein Ablaufdatum; das Geheimnis wird einmal angezeigt."
+    }
+  }
+}

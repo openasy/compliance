@@ -1,0 +1,189 @@
+{
+  "product": {
+    "overview": "Genel bakış",
+    "controls": "Kontroller",
+    "checks": "Denetimler",
+    "frameworks": "Çerçeveler",
+    "members": "Üyeler",
+    "signIn": "Oturum açma",
+    "apiTokens": "API belirteçleri",
+    "account": "Hesap",
+    "loading": "Yükleniyor",
+    "reading": "Kontroller ve kanıtları okunuyor."
+  },
+  "controlStates": {
+    "passing": "Karşılanıyor",
+    "failing": "Karşılanmıyor",
+    "needs-evidence": "Kanıt gerekli",
+    "not-applicable": "Uygulanmıyor"
+  },
+  "checkStates": {
+    "pass": "Geçiyor",
+    "fail": "Geçmiyor",
+    "no-data": "Veri yok",
+    "unreachable": "Okunamadı",
+    "not-connected": "Kurulu değil"
+  },
+  "sourceStates": {
+    "ok": "Okundu",
+    "failing": "Okunamadı",
+    "waiting": "Henüz okunmadı"
+  },
+  "reports": {
+    "md": "Rapor",
+    "csv": "CSV"
+  },
+  "search": {
+    "control": "Kontrol"
+  },
+  "gaps": {
+    "failing": "{{check}}: denetim geçmiyor.",
+    "no-data": "{{check}}: ürün bu sayıyı yayınlamıyor.",
+    "unreachable": "{{check}}: ürün okunamadı.",
+    "no-product": "Kurulu hiçbir ürün bunu kanıtlamıyor: kanıtı elle ekle.",
+    "evidence-missing": "Kanıtı elle ekle: {{manual}}.",
+    "evidence-expired": "Elle eklenen kanıtın süresi doldu: yeniden ekle."
+  },
+  "checkHints": {
+    "pass": "{{product}} bunu karşılayan bir sayı yayınlıyor.",
+    "fail": "{{product}} bunu karşılamayan bir sayı yayınlıyor. Orada düzelt; sonraki okuma değişikliği gösterir.",
+    "no-data": "{{product}} bu sayıyı yayınlamıyor: eski bir sürüm olabilir ya da henüz sayacak bir şeyi yoktur.",
+    "unreachable": "{{product}} son okumada okunamadı. Değer, okunan son değerdir.",
+    "not-connected": "{{product}} kurulumun ürünleri arasında değil, bu yüzden bu denetim hiçbir kontrolde sayılmaz."
+  },
+  "overviewPage": {
+    "overview": "Genel bakış",
+    "readAt": "Ürünler en son {{when}} tarihinde okundu.",
+    "notReadYet": "Ürünler henüz okunmadı.",
+    "sourcesFailing_one": "{{count}} ürün okunamadı",
+    "sourcesFailing_other": "{{count}} ürün okunamadı",
+    "see": "Hangileri",
+    "sourcesFailingDetail": "Denetimleri okunan son değerleri tutar; kanıtladıkları kontroller yeniden okunana kadar kanıt bekler.",
+    "noSources": "Hiçbir ürün okunmuyor",
+    "noSourcesDetail": "Her üründe olduğu gibi OPENASY_PRODUCTS'u kurulumun ürünlerine ya da COMPLIANCE_SOURCES'u onların /metrics adreslerine ayarla.",
+    "passing": "Karşılanan",
+    "ofApply": "Uygulanan {{of}} kontrolden {{n}}",
+    "failing": "Karşılanmayan",
+    "needsEvidence": "Kanıt bekleyen",
+    "withoutOwner": "Sahipsiz",
+    "productsRead": "Okunan ürünler",
+    "frameworkDetail": "{{failing}} karşılanmıyor, {{needs}} kanıt bekliyor, {{na}} uygulanmıyor.",
+    "controls": "Kontroller",
+    "trend": "90 günde karşılananlar",
+    "trendDetail": "Her günün sonunda, uygulanan kontrollerden karşılananların payı.",
+    "target": "%80",
+    "trendSoon": "Eğilim ikinci günden sonra görünür",
+    "trendSoonDetail": "Her gün, karşılanan kontrollerin payını saklar.",
+    "holdingBack": "Kontrolleri geride tutan denetimler",
+    "holdingBackDetail": "Geçmeyen denetimler, kaç kontrolü geride tuttuklarına göre.",
+    "noFailingChecks": "Geçmeyen denetim yok",
+    "evidenceEnding": "Elle eklenen kanıt: {{soon}} tanesi 30 gün içinde bitiyor, {{expired}} tanesi bitti",
+    "evidenceEndingDetail": "Süresi biten kanıt artık sayılmaz. Yeni sürümünü kontrolün üzerine ekle."
+  },
+  "controlsPage": {
+    "controls": "Kontroller",
+    "description": "Açık çerçevelerin her kontrolü; onu kanıtlayan denetimler ve elle eklenen kanıtlarla.",
+    "control": "Kontrol",
+    "state": "Durum",
+    "proof": "Kanıt",
+    "checksPassing": "{{of}} denetimden {{n}} tanesi geçiyor",
+    "noProduct": "Kurulu hiçbir ürün kanıtlamıyor",
+    "evidence_one": "{{count}} kanıt",
+    "evidence_other": "{{count}} kanıt",
+    "owner": "Sahibi",
+    "all": "Tümü",
+    "shown": "{{total}} kontrolden {{shown}} gösteriliyor",
+    "framework": "Çerçeve",
+    "search": "Kontrol ara",
+    "none": "Kontrol yok",
+    "noneDetail": "Süzgeçleri değiştir ya da bir çerçeveyi aç."
+  },
+  "controlPage": {
+    "notFound": "Kontrol bulunamadı",
+    "notFoundDetail": "Çerçevesi ya da numarası yanlış olabilir.",
+    "back": "Kontrollere dön",
+    "whatIsMissing": "Eksik olan",
+    "checks": "Denetimler",
+    "checksDetail": "Ürünlerden okunan sayılar. Kurulu olmayan bir ürün sayılmaz.",
+    "noChecks": "Denetim yok",
+    "noChecksDetail": "Yazılım bu kontrolü kanıtlayamaz: kanıtı elle ekle.",
+    "evidence": "Elle eklenen kanıt",
+    "asks": "İstenen: {{manual}}.",
+    "evidenceDetail": "Denetimlerin kapsamadığı belgeler ve kayıtlar. Her biri tarihine kadar sayılır.",
+    "addedBy": "{{who}}, {{when}} tarihinde ekledi; {{until}} tarihine kadar sayılır",
+    "valid": "Sayılıyor",
+    "expired": "Süresi doldu",
+    "deleteEvidence": "{{title}} kanıtını sil",
+    "noEvidence": "Eklenmiş kanıt yok.",
+    "addEvidence": "Kanıt ekle",
+    "title": "Başlık",
+    "titlePlaceholder": "Erişim gözden geçirmesi, 3. çeyrek",
+    "link": "Nerede",
+    "validUntil": "Şu tarihe kadar sayılır",
+    "validUntilHint": "Boş bırakılırsa bugünden bir yıl sonrası.",
+    "ownerAndScope": "Sahibi ve kapsam",
+    "ownerPlaceholder": "Bir kişi ya da bir ekip",
+    "save": "Kaydet",
+    "applies": "Burada uygulanıyor",
+    "appliesDetail": "Uygulanmıyor olarak işaretlemek için önce nedenini yaz: denetçi soracaktır.",
+    "doesNotApply": "Uygulanmıyor: {{reason}}",
+    "reason": "Neden uygulanmıyor",
+    "reasonHint": "Örneğin: kart verisi tutmuyoruz."
+  },
+  "checksPage": {
+    "checks": "Denetimler",
+    "description": "Her ürünün /metrics'te yayınladığı sayılar ve ne olmaları gerektiği. Ürünler 15 dakikada bir okunur.",
+    "product": "Ürün",
+    "check": "Denetim",
+    "value": "Değer",
+    "state": "Durum",
+    "address": "Adres",
+    "controls": "Kontroller",
+    "readNow": "Şimdi oku",
+    "reading": "Okunuyor",
+    "sources": "Okunan ürünler",
+    "sourcesDetail": "Her ürünün /metrics adresi ve son okumasının nasıl geçtiği."
+  },
+  "checkPage": {
+    "notFound": "Denetim bulunamadı",
+    "notFoundDetail": "Bu adda bir denetim yok.",
+    "back": "Denetimlere dön",
+    "readAt": "{{when}} tarihinde okundu: {{value}}.",
+    "rule": "Kural",
+    "last90": "Son 90 gün",
+    "last90Detail": "Günün her okuması geçtiyse yeşil, bazıları geçtiyse sarı, hiçbiri geçmediyse kırmızı.",
+    "dayDetail": "{{runs}} okumadan {{passes}} tanesi geçti, son değer {{value}}",
+    "noRead": "Okunmadı",
+    "daysAgo": "{{n}} gün önce",
+    "today": "Bugün",
+    "proves": "Kanıtladığı kontroller"
+  },
+  "frameworksPage": {
+    "frameworks": "Çerçeveler",
+    "description": "Burada kapsamdaki çerçeveler. Kapsam dışındaki bir çerçeve listelerde ve genel bakışta yer almaz.",
+    "counts": "{{controls}} kontrol, {{passing}} tanesi karşılanıyor.",
+    "inScope": "Kapsamda",
+    "inScopeDetail": "Yalnızca yöneticiler değiştirebilir."
+  },
+  "settingsPage": {
+    "adminsOnly": "Yalnızca yöneticiler",
+    "askAnAdmin": "Bu compliance'ın bir yöneticisine sor.",
+    "signOut": "Oturumu kapat",
+    "account": {
+      "title": "Hesap",
+      "description": "Profilin, parolan, iki adımlı doğrulama ve oturumunun açık olduğu yerler."
+    },
+    "members": {
+      "title": "Üyeler",
+      "description": "Bu compliance'a kimin hangi rolle girebileceği. İzleyiciler, denetçiler de, her şeyi görür; editörler ayrıca kontrollerin sahibi olur ve kanıt ekler; yöneticiler ayrıca çerçeveleri seçer, üyeleri ve belirteçleri yönetir."
+    },
+    "signin": {
+      "title": "Oturum açma",
+      "description": "OpenAsy Identity, Keycloak ya da Microsoft Entra ID gibi, kişilerin oturum açabileceği kimlik sağlayıcıları ve hangi gruplarının hangi rolü verdiği."
+    },
+    "tokens": {
+      "title": "API belirteçleri",
+      "description": "Betikler ve CI için. Her belirtecin bir rolü ve bir bitiş tarihi vardır; gizli değer bir kez gösterilir."
+    }
+  }
+}
