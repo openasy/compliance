@@ -71,7 +71,7 @@ import {
   type Source,
   type Summary,
 } from "./api.ts";
-import { useT } from "./i18n.ts";
+import { useT, viewerLocale, setViewerLocale } from "./i18n.ts";
 import { search } from "./search.ts";
 
 const PAGES = ["controls", "checks", "frameworks", "account", "members", "signin", "tokens", "about"] as const;
@@ -107,8 +107,8 @@ function useApi() {
 }
 type Call = ReturnType<typeof useApi>;
 
-const when = (iso: string) => new Date(iso).toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
-const day = (iso: string) => new Date(`${iso}T00:00:00Z`).toLocaleDateString(undefined, { month: "short", day: "numeric", timeZone: "UTC" });
+const when = (iso: string) => new Date(iso).toLocaleString(viewerLocale(), { dateStyle: "medium", timeStyle: "short" });
+const day = (iso: string) => new Date(`${iso}T00:00:00Z`).toLocaleDateString(viewerLocale(), { month: "short", day: "numeric", timeZone: "UTC" });
 const pct = (n: number, of: number) => (of ? Math.round((n / of) * 100) : 0);
 const controlPath = (framework: string, ref: string) => `/controls/${framework}/${encodeURIComponent(ref)}`;
 const productName = (id: string) => (PRODUCTS as Record<string, { name: string } | undefined>)[id]?.name ?? id;
@@ -896,6 +896,7 @@ export function App() {
   const installBrand = useInstallBrand();
   const [theme] = useThemePreference();
   const [locale] = useLocalePreference();
+  setViewerLocale(locale);
   return (
     // The install's brand from config/brand.env (ADR 0053); OpenAsy's own look where it sets none.
     <BrandProvider theme={theme} locale={locale} brand={{ name: "OpenAsy", organization: undefined, ...installBrand }} className="min-h-screen">
