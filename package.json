@@ -1,6 +1,6 @@
 {
   "name": "@openasy/compliance",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "OpenAsy Compliance: ISO 27001, SOC 2, GDPR and PCI DSS controls, with evidence read from the products that do the work.",
   "license": "AGPL-3.0-only",
